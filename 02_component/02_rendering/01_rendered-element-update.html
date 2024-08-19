@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id = "root"></div>
+
+    <!-- 이안에 들어가는 모든 엘리먼트들 reactDOM에서 관리하기 때문에 루트dom 혹은 rootNode라고한다
+    일반적으로 react로 구현된 어플리케이션은 하나의 루트 dom이 있다
+    단, 리엑트를 기존앱에 통합하려할대는 원하는 만크의 독립된 루트 dom노드를 가질수있다. -->
+
+    <script type = "text/babel">
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        function tick(){
+        const element =(
+            <>
+            <h1> what time is it now?</h1>
+            <h3>it is {new Date().toLocaleTimeString()}</h3>
+            </>
+        )
+        root.render(element);
+        }
+
+      setInterval(tick, 1000);
+
+    </script>
+</body>
+</html>
