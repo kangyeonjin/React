@@ -10,23 +10,9 @@
 </head>
 <body>
     <div id = "root"></div>
-
-
+    
     <script type = "text/babel">
-
-        const user = {
-            firstName : "Gildong",
-            lastName : "Hong"
-        }
-        //h1태그의 element를 만들어 주는 jsx문법
-        //중괄호를 이용해 javascript표현식(문법)을 사용가능하다
-        const element = <h1>Hello,{formatName(user)}</h1>
-
-        //풀네임으로 return해주는 함수
-        function formatName(user){
-            return`${user.lastName} ${user.firstName}`
-        }
-
+        
         ReactDOM.createRoot(document.getElementById('root')).render(element);
     </script>
 </body>

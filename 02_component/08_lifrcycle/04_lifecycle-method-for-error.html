@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id = "root"></div>
+
+    <!-- error 시 생명주기 메소드 라이프 사이클
+(getDerivedStateFromError) → (componentDidCatch) -->
+
+    <script type = "text/babel">
+    class ErrorBoundery extends React.Component{
+
+        state = {
+            hasError: false
+        };
+
+        //에러정보를 state에 저장하는 용도
+        //자손컴포넌트에서 오류가 발생했을때 자동호출되는메서드
+        static getDerivedStateFromError(error){
+            console.log('getDerivedStateFromError');
+            // 매개변수로 오류를 전달받고, 갱신된 state값을 반드시반환
+            // 주의할점render단계에서 호출이 되기때문에 부수적효과발생시키면안됨
+            //렌더링중에 에러가 발생하므로 haserror가 아닌 다른 state를 
+            //변경하게 되면 무한루프에 빠짐
+            //getDerviedstate가 동작 ->setstate()->error발생
+            return {hasError: true};
+            
+        }
+
+        //에러를 서버로 전송하는 용도
+        // componentDidCatch(error, info){
+        //     console.log('componentDidCatch');
+        //     console.log(this.state);
+        //     console.log({error, info});
+        // }
+        render(){
+            if(this.state.hasError){
+                return(
+                    <>
+                    <h1>에러</h1>
+                    <h3>꾸밀수잇다.</h3>
+                    </>
+
+                );
+            }
+            //별다른 엘리먼트 추가없이 자식컴포넌트를 내보내는 용도
+            return this.props.children;
+        }
+
+    }
+
+    class TimePrinter extends React.Component{
+
+        state ={
+            now: new Date().toLocaleTimeString()
+        };
+
+        render() {
+            return (
+            <>
+            <button
+            onClick={() => this.setState({now: new Date().toLocaleTimeString()})}
+                >
+            현재 시간 확인하기
+            </button>
+            <h1>{this.states.now}</h1> {/* 에러 발생 상황을 만들기 위해 state -> states */}
+            </>
+            );
+            }
+        }
+
+    class App extends React.Component{
+
+        render(){
+
+            return(
+                <ErrorBoundery><TimePrinter/></ErrorBoundery>
+            );
+
+        }
+
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<APP/>);
+    </script>
+</body>
+</html>
