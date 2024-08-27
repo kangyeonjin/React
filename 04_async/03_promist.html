@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+// 💡 promise는 콜백 지옥과 같은 코드가 형성되지 않게(비동기 통신 간에 순서를 정
+// 하기 쉽게) 하는 방안으로 ES6에서 도입되었다.
+// 비동기 연산이 종료 된 이후의 결과 값과 실패 사유를 처리하기 위한 처리기를 연
+// 결할 수 있으며 최종 결과를 반환하는 것이 아닌 미래의 어떤 시점에 결과를 제공
+// 하겠다는 ‘약속’을 반환한다.
+// promise의 상태
+// 대기(pending): 이행하지도, 거부하지도 않은 초기 상태
+// 이행(fulfilled): 연산이 성공적으로 완료된 상태
+// 거부(rejected): 연산이 실패한 상태
+// promise 객체는 resolve와 reject 함수를 활용한다.
+// 1. resolve: 함수의 인자로 넘어온 값을 저장하고 있다가 then을 만나면 저장했던
+// 값을 지닌 Promise 객체를 반환한다.
+// 2. reject: 어떠한 이유로 거부되어야 할(조건일) 때의 Promise 객체를 반환한다
+    function increase(number){
+    const promise = new Promise((resolve, reject)=>{
+        setTimeout(
+            ()=>{
+                const result =Number+10;
+                if(result >50){
+                    const e = new Error('NumberToBig');
+                    return reject(e);
+                }
+                resolve(result);
+            },
+            1000
+        );
+    });
+    return promise;
+    }
+
+    /* increase함수 호출후에는 promise가 반환됨
+    이 promise는 resolve함수에 던져진 인수를 기억함
+    promise를 통해 then을 호출하고
+    던져지는 콜백함수의 인수로 기억했던 resolve함수의인수를 넣어줌*/
+    console.log(increase(0));
+    
+    increase(0).then(number=>{
+        console.log(number);
+        return increase(number);
+        
+    })
+    .then(number => {
+        console.log(number);
+        return increase(number);
+    })
+
+    .then(number => {
+        console.log(number);
+        return increase(number);
+    })
+    
+    .then(number => {
+    console.log(number);
+    console.log('end');
+    })
+    .catch(e => {
+    console.log();
+    })
+    .finally(()=>{
+    console.log('finally');
+    })
+    </script>
+</body>
+</html>

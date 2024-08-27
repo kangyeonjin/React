@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .header{
+            font-size: 18px;
+            background: black;
+            color:white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .Footer{
+            font-size: 10px;
+            background: black;
+            color:white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .todo{
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+        }
+        .input{
+            justify-content: center;
+            align-items: center;
+        }
+        .delete-button{
+            background-color: rgb(103, 115, 230);
+            color :aliceblue
+        }
+
+        </style>
+</head>
+
+<body>
+    <div id = "root"></div>
+    <script type = "text/babel">
+    
+    const{useState, useReducer} =React;
+
+    function reducer (state,action){
+
+        switch(action.type){
+            case 'DECREMENT' :
+                console.log(state);
+                return{value:state.value -1}
+            case 'INCREMENT' :
+                console.log(state);
+                return{value:state.value +1}
+            default :
+                console.log(state);
+                return state;   
+    }
+}
+
+
+        function Header(){
+
+            return(
+                <div className='header'>
+                    <h1>오늘은 몇일?{new Date().toLocaleDateString()}</h1>
+                </div>
+            );
+            
+        }
+
+        function Todo(){
+            
+            return(
+                <div className='todo'>
+                    <h2>TodoList 만들기</h2>
+                    <label><input type="checkbox"/>
+                        출력을 해봐여</label>
+                        <button className="delete-button">삭제</button>
+                    <li>다만들면 메뉴판으로 바꾸기</li>
+                </div>
+            )
+        }
+
+        function InputComponent(){
+
+            const[enters, setenters] = useState([]);
+            const[inputText, setInputText] = useState('');
+            const[nextId, setNextId]= useState(enters.length+1);
+
+            //입력받은 값을 inputtext상태로 업데이트하는 함수
+            const onChangeHandler = e => setInputText(e.target.value);
+
+            //버튼클릭시 호출되는 함수
+            const onClickHandler = () =>{
+
+                const newValue ={
+                    id:nextId,
+                    text: inputText
+                };
+
+                //새로운객체 생성하여 배열에추가(concat사용)
+                const updateEnters = enters.concat(newValue);
+                
+                //nextid를 증가해서 다음에 추가할 이름의 id를 준비함
+                setNextId(nextId + 1);
+                setenters(updateEnters);  //상태 업데이트
+                setInputText('');  //inputtext를 초기화함
+            }
+
+            const onRemove = id => {
+                const updatedEnters = enters.filter(item => item.id !== id);
+                setenters(updatedEnters);
+            }
+
+            const enterList = enters.map(enters => <li key={enters.id} onDoubleClick={()=>onRemove(enters.id)}>{enters.enters}</li>)
+
+            return(
+                <div className='input'>
+                <input value ={inputText} onChange={onChangeHandler}/>
+                <button onClick ={onClickHandler}>추가하기</button>
+                <ul>
+                    {enters.map(item=>(
+                        <li key={item.id} onDoubleClick={() => onRemove(item.id)}>{item.text}</li>
+                    ))}
+                    </ul>
+                </div>
+            )
+        }
+
+        function Footer(){
+            return(
+            <div className="Footer">
+                <h4>푸터예요</h4>
+            </div>
+            )
+        }
+
+        function TodoApp(){
+            return(
+                <div className="container">
+                    <Header/>
+                    <Todo/>
+                    <InputComponent/>
+                    <Footer/> 
+                </div>
+            );
+        }
+
+        
+        // class Homework extends React.Component{
+
+        //     state ={
+
+        //     }
+        //     const 
+        //     render(){
+
+        //         return(
+        //             <>
+        //             <h1>ToList</h1>
+        //             <li>목록을 추가해요</li>
+        //             <li>다만들면 메뉴판으로 바꾸기</li>
+        //             </>
+        //         )         
+        //     }
+        // }
+
+        ReactDOM.createRoot(document.getElementById('root'))
+        .render(<TodoApp/>);
+    </script>
+</body>
+</html>

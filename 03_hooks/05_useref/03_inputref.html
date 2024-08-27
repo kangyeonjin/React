@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id = "root"></div>
+
+
+    <script type = "text/babel">
+
+        const {useState, useRef, useEffect} = React;
+
+        function LoginComponent(){
+
+            const [form, setForm] = useState({
+                username:'',
+                password:''
+            })
+
+            //input의 onchange이벤트가 발생했을때 username가변경되면 form.username을 변경하고
+            //password가 변경되면 form.password를 변경해주는 onchangehandler를 만들어주세요
+
+            const usernameRef = useRef();
+
+            useEffect(()=>{
+
+                console.log(usernameRef.current);
+                usernameRef.current.focus(); 
+            },[])
+
+            const onChangeHandler =(e)=> {
+
+                setForm({
+                    ...form,
+                    [e.target.name]: e.target.value
+                })
+            
+                console.log('찍어봐요');
+                
+            }
+
+            const onClickHandler = () => {
+                alert(`username: ${form.username} \n password: ${form.password}`);
+                setForm({
+                    username: '',
+                    password: ''
+                });
+                usernameRef.current.focus(); 
+            }
+
+            //input태그의 ref속성에 useref값을 적용하면
+            //useref는 해당태그를 참조한다
+            return(
+                <>
+                <input type="text" name="username" placeholder='이름'
+                value={form.username} onChange={onChangeHandler} ref={usernameRef}/>
+                <br/>
+                <input type="password" name="password" placeholder='비밀번호'
+                value={form.password} onChange={onChangeHandler}/>
+                <br/>
+                <button onClick={onChangeHandler}>로그인</button>
+                </>
+
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root')).render(<LoginComponent/>);
+    </script>
+</body>
+</html> 

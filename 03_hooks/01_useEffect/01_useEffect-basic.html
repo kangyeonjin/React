@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id = "root"></div>
+
+    <script type = "text/babel">
+
+        //hooks는 함수컴포넌트에서 사용불가능한 생명주기 메소드의 한계점으로 인해 상태관리 및  랜더링 이후 시점 컨트롤등 다양한 문제를 해결하기 위해 만든 함수집합을 의미함
+        //그중 usestate는 가장 기본적인 hook이며 함수컴포넌트에서도 상태를 관리할수있게해준다
+        //상태를 관리하는개념은 state를다룰때 이용해봤기때문에 그 부분은 hooks챕터에서는 생략함
+
+        //컴포넌트가 렌더링된이후에 특정작업을 수행할 필요가 있다면 클래스형 컴포넌트에서는 componentdidmount혹은
+        //componentdidupdate메소드를 사용하면된다
+        //함수형컴포넌트에서는 생명주기 api사용이 불가함
+        //함수형 컴포넌트에서도 렌더링된이후 시점에 수행할 내용이 필요한 경우 사용할수있는 기능르 hooks로 제공하고 있고
+        //그rp  useEffect이다
+        const {useEffect} = React;
+        
+        function MessagePrinter({message}){
+            console.log('렌더링.');
+
+            useEffect(()=>{
+                console.log('렌더링이후동작');
+                console.log(message);
+                
+            })
+
+            return(
+                <h1>{console.log('렌더링시 출력')}{message}</h1>
+            )
+            //이 위치에서 (마운트나 업데이트되고나서)무언가 동작하게 하고 싶지만 그럴수없다
+            //(return이후 코드라서)
+            //이시점에서 실행하고싶은것을 useEffect를 이용해서 처리할수있다
+            // console.log('렌더링 이후 동작...');
+            
+        }
+
+        const message ="안녕";
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<MessagePrinter message={message}/>);
+    </script>
+</body>
+</html>
